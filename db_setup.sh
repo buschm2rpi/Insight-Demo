@@ -23,3 +23,7 @@ mysqlimport  \
 	--fields-terminated-by=',' \
 	--local -u ${DBUSER} -p${PASS} ${DBNAME} ${CSVDATA}
 
+# add auto incremented ID field
+mysql -u ${DBUSER} -p${PASS} -e "use ${DBNAME}; ALTER TABLE ${TABLENAME} ADD id INT PRIMARY KEY AUTO_INCREMENT;"
+
+
