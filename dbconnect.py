@@ -5,12 +5,7 @@ def getSchema(dbinfo):
                                   password=dbinfo['passwd'],
                                   database=dbinfo['database'])
     cursor = cnx.cursor()
-
-    #query = ("SELECT column(1) FROM "+database+"."+table)
-            # "WHERE hire_date BETWEEN %s AND %s")
-
     query = ("SHOW columns from "+dbinfo['table'])
-
     cursor.execute(query)
 
     schema=[]
@@ -32,30 +27,48 @@ def getColumnItems(columns,dbinfo):
     for column in columns:
         query = query + ", " + column
     query = query + " FROM "+dbinfo['table']
-    print query
+    print(query)
     cursor.execute(query)
-    
+    #print(cursor.)
     items=[i for i in cursor]
     #uniqueItems=set([i[1] for i in items])
+
+    cursor.close()
+    cnx.close()
+    
     return items
 
+def getDictA2B(fileA):
+    B = dict()
+    f = open(fileA)
+    f.readline() # skip over the header
+    line = f.readline().rstrip()
+    while line != "":
+        data = line.split('"')
+        B[data[1]]=data[3]
+        line = f.readline().rstrip()
+    return B
+
 #################
-config={
-    'user':'mbusch',
-    'passwd':open("password.txt").readline().rstrip(),
-    'database':'insightdb',
-    'table':'926969878_T_ONTIME'}
 
-# for testing
-cnx = mysql.connector.connect(user=config['user'], 
-                                  password=config['passwd'],
-                                  database=config['database'])
+if __name__ == "__main__":
+    config={
+        'user':'mbusch',
+        'passwd':open("password.txt").readline().rstrip(),
+        'database':'insightdb',
+        'table':'926969878_T_ONTIME'}
+
+    # for testing
+    cnx = mysql.connector.connect(user=config['user'], 
+                                      password=config['passwd'],
+                                      database=config['database'])
 
 
-schema = getSchema(config)
-idx_list=[1,2,3]
-columns = []
-for i in idx_list:
-    columns.append(str(schema[i][0]))
-print columns
-items = getColumnItems(columns,config)
+    schema = getSchema(config)
+    idx_list=[1,2,3]
+    columns = []
+    for i in idx_list:
+        columns.append(str(schema[i][0]))
+    print(columns)
+    items = getColumnItems(columns,config)
+
