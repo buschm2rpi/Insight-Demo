@@ -1,10 +1,10 @@
 #!/usr/bin/sh
 
 # mysql table creation
-export CSVDATA=926969878_T_ONTIME.csv
+export TABLENAME=281486765_T_ONTIME
+export CSVDATA=${TABLENAME}.csv
 
 export DBNAME=insightdb
-export TABLENAME=926969878_T_ONTIME
 export DBUSER=mbusch
 export PASS=$(cat password.txt)
 
@@ -21,6 +21,7 @@ mysql -u ${DBUSER} -p${PASS} -e "use ${DBNAME}; $(cat db_setup.sql)"
 mysqlimport  \
 	--ignore-lines=1 \
 	--fields-terminated-by=',' \
+	--fields-enclosed-by='"' \
 	--local -u ${DBUSER} -p${PASS} ${DBNAME} ${CSVDATA}
 
 # add auto incremented ID field
