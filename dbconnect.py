@@ -1,9 +1,8 @@
 import mysql.connector
+from pandas import read_sql
 
 def getSchema(dbinfo):
-    cnx = mysql.connector.connect(user=dbinfo['user'], 
-                                  password=dbinfo['passwd'],
-                                  database=dbinfo['database'])
+    cnx = getConnection(columns,dbinfo)
     cursor = cnx.cursor()
     query = ("SHOW columns from "+dbinfo['table'])
     cursor.execute(query)
@@ -18,16 +17,9 @@ def getSchema(dbinfo):
     return schema
 
 def getColumnItems(columns,dbinfo):
-    cnx = mysql.connector.connect(user=dbinfo['user'], 
-                                  password=dbinfo['passwd'],
-                                  database=dbinfo['database'])
+    cnx = getConnection(columns,dbinfo)
     cursor = cnx.cursor()
-
-    query="SELECT id"
-    for column in columns:
-        query = query + ", " + column
-    query = query + " FROM "+dbinfo['table']
-    print(query)
+    query = constructQuery(columns,dbinfo)
     cursor.execute(query)
     #print(cursor.)
     items=[i for i in cursor]
@@ -37,6 +29,24 @@ def getColumnItems(columns,dbinfo):
     cnx.close()
     
     return items
+
+def getDFfromDB(columns,dbinfo):
+    cnx = getConnection(columns,dbinfo)
+    query = constructQuery(columns,dbinfo)
+    return read_sql(query, cnx, index_col='id')
+
+def constructQuery(columns,dbinfo):
+    query="SELECT id"
+    for column in columns:
+        query = query + ", " + column
+    query = query + " FROM "+dbinfo['table']
+    print(query)
+    return query
+
+def getConnection(columns,dbinfo):
+    return mysql.connector.connect(user=dbinfo['user'], 
+                                  password=dbinfo['passwd'],
+                                  database=dbinfo['database'])
 
 def getDictA2B(fileA):
     B = dict()
