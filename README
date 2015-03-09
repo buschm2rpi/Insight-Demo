@@ -1,0 +1,5 @@
+These scripts demonstrate some simple ways to probe data from publicly available flight data from the US Department of Transportation, Bureau of Transportation Statistics.
+
+The Airline On-Time Performance data tables can be found at: 
+
+http://transtats.bts.gov/DL_SelectFields.asp?Table_ID=236
