@@ -38,7 +38,7 @@ allCarriers = getDictA2B('L_AIRLINE_ID.csv')
 allMarkets = getDictA2B('L_CITY_MARKET_ID.csv')
 
 # Use Naive-Bayes approach to classify airport based on...
-'''
+
 # pull data from DB
 tstart=time()
 
@@ -89,12 +89,12 @@ for i in range(rows.shape[0]):
 
 print('Finished Constructing feature matrix. Time taken: {0:.2f} sec.'.format(time()-tstart))
 
+''' # saving data can speed up testing
 sp.save('X.npy',X)
 sp.save('y.npy',y)
-'''
 X=sp.load('X.npy')
 y=sp.load('y.npy')
-
+'''
 
 # Do the NB classifier
 
