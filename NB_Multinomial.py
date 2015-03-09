@@ -97,15 +97,30 @@ y=sp.load('y.npy')
 '''
 
 # Do the NB classifier
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.9, random_state=0)
-
 tstart=time()
-clf = MultinomialNB()
-clf.fit(X_train, y_train)
-print('Finished computing NB classifier. Time taken: {0:.2f} sec.'.format(time()-tstart))
+trainSize = 0.9
+samples = 100
+trainAccuracy = sp.zeros(samples)
+testAccuracy = sp.zeros(samples)
+for i in range(samples):
+    X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                        train_size=trainSize,
+                                                        random_state=sp.random.RandomState())
+    clf = MultinomialNB()
+    clf.fit(X_train, y_train)
+    trainAccuracy[i] = clf.score(X_train, y_train)
+    testAccuracy[i] = clf.score(X_test, y_test)
 
-# Compute confusion matrix
+print('Finished computing NB classifier. Time taken: {0:.2f} sec.'.format(time()-tstart))
+print("\n Training size: {0:.2f}\n \
+      Training Set \n\t\t Mean: {1:.3f}\n\t\t STD: {2:.3f}\n \
+      Training Set \n\t\t Mean: {3:.3f}\n\t\t STD: {4:.3f}\n".format(trainSize,
+                                                               sp.mean(trainAccuracy),
+                                                               sp.std(trainAccuracy),
+                                                               sp.mean(testAccuracy),
+                                                               sp.std(testAccuracy)))
+
+# Compute confusion matrix for an in-sample classification
 labels=list(set(y_train.tolist()))
 nameLabels=[allMarkets[str(int(i))] for i in labels]
 cm = confusion_matrix(y_test, clf.predict(X_test),labels)
