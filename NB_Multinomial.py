@@ -58,7 +58,7 @@ rows = sp.array(rows)
 city = rows[:,1]
 rows = rows[:,2:10]
 
-# use the cities found in factors.py
+# use the cities found in departure_delays.py
 origin_cities=set([31123.0, 34819.0, 32474.0, 30325.0, 35356.0, 30977.0, 33459.0, 30165.0, 32320.0, 33076.0])
 mCity=sp.zeros(city.shape)
 mRow=sp.zeros(rows.shape)
