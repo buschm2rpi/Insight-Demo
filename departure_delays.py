@@ -19,7 +19,7 @@ columns=['DEST_CITY_MARKET_ID',
 rows = getColumnItems(columns,config)
 
 #sp.save('rows',rows)
-rows=sp.load('rows.npy')
+#rows=sp.load('rows.npy')
 
 uniqueCities=list(set([i[1] for i in rows]))
 
@@ -67,7 +67,7 @@ plt.xlabel('Delays Per Flights')
 plt.ylabel('Cities')
 plt.title('Expected Delay Rate')
 plt.yticks(index + bar_width, key)
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5)).draggable()
+plt.legend(loc='center left', bbox_to_anchor=(0.5, 0.2)).draggable()
 plt.tight_layout()
 #plt.savefig('Delay_Rate.pdf')
 plt.show()
